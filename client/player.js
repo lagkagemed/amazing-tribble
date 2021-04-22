@@ -36,8 +36,10 @@ let Player = function(x, y, dir, socketid, name, speed) {
     }
 
     self.draw = function() {
+        if (myId == self.socketid) ctx.fillStyle = 'GREEN'
         ctx.font = "30px Arial";
         ctx.fillText(this.name, this.x, this.y);
+        ctx.fillStyle = 'BLACK'
     }
 
     PLAYER_LIST[self.socketid] = self
