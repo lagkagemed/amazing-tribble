@@ -10,6 +10,7 @@ function init() {
     myHeight = window.innerHeight -5 
     ctx.canvas.width = myWidth
     ctx.canvas.height = myHeight
+    setUnitSize(myWidth, myHeight)
 }
 
 let socket = io();
@@ -82,3 +83,16 @@ function updateAllObjectsInList(list) {
         object.update();
     }
 }
+
+function setUnitSize(myWidth, myHeight) {
+    if (myWidth <= myHeight) unitSize = myWidth / 10
+    if (myHeight <= myWidth) unitSize = myHeight / 10
+}
+
+let isReady = new Image()
+let imgPlayer = new Image()
+imgPlayer.src = "./client/img/Player.png"
+let imgPlayerS = new Image()
+imgPlayer.addEventListener("load", function(){
+    imgPlayerS.src = Resize_Nearest_Neighbour(imgPlayer, unitSize)
+});

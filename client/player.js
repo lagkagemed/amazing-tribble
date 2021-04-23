@@ -4,6 +4,7 @@ let Player = function(x, y, dir, socketid, name, speed) {
     self.socketid = socketid
     self.name = name
     self.speed = speed
+    self.facingLeft = false
 
     self.update = function() {
         if (myId == self.socketid) {
@@ -32,13 +33,17 @@ let Player = function(x, y, dir, socketid, name, speed) {
             this.x += Math.cos(degrees_to_radians(angle)) * deltat * this.speed;
             this.y -= Math.sin(degrees_to_radians(angle)) * deltat * this.speed;
         }
+
+        if (this.dir > 1 && this.dir < 5) this.facingLeft = false
+        if (this.dir > 5) this.facingLeft = true
         
     }
 
     self.draw = function() {
+        drawImage(imgPlayerS, this.x + unitSize, this.y + unitSize, imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
         if (myId == self.socketid) ctx.fillStyle = 'GREEN'
-        ctx.font = "30px Arial";
-        ctx.fillText(this.name, this.x, this.y);
+        ctx.font = unitSize + "px Arial";
+        ctx.fillText(this.name, this.x, this.y - unitSize);
         ctx.fillStyle = 'BLACK'
     }
 
