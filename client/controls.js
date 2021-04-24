@@ -10,6 +10,7 @@ let haveSentRight = false
 
 let sendNewInfo = false
 
+let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 document.addEventListener('keydown', logKeyDown);
 document.addEventListener('keyup', logKeyUp);
@@ -69,3 +70,75 @@ function checkKeyStates() {
     }
 
 }
+
+canvas.addEventListener('touchstart', dragStart, false)
+canvas.addEventListener('touchend', dragEnd, false)
+canvas.addEventListener('touchmove', drag, false)
+
+
+let touchX = 0
+let touchY = 0
+
+function dragStart(e) {
+    e.preventDefault()
+    touchX = e.touches[0].clientX
+    touchY = e.touches[0].clientY
+}
+
+function dragEnd() {
+    pressingUp = false
+    pressingDown = false
+    pressingLeft = false
+    pressingRight = false
+    sendNewInfo = true
+    touchX = 0
+    touchY = 0
+}
+
+function drag(e) {
+    e.preventDefault()
+    touchX = e.touches[0].clientX
+    touchY = e.touches[0].clientY
+}
+
+function updateTouchControls() {
+    if (touchX > JknapX && touchX < JknapX + imgJoystickS.width && touchY > JknapY && touchY < JknapY + imgJoystickS.height / 3) {
+        pressingUp = true
+    } else if (haveSentUp) {
+        pressingUp = false
+        haveSentUp = false
+        sendNewInfo = true
+    }
+
+    if (touchX > JknapX && touchX < JknapX + imgJoystickS.width && touchY > JknapY + imgJoystickS.height / 3 * 2 && touchY < JknapY + imgJoystickS.height) {
+        pressingDown = true
+    } else if (haveSentDown) {
+        pressingDown = false
+        haveSentDown = false
+        sendNewInfo = true
+    }
+
+    if (touchX > JknapX && touchX < JknapX + imgJoystickS.width / 3 && touchY > JknapY && touchY < JknapY + imgJoystickS.height) {
+        pressingLeft = true
+    } else if (haveSentLeft) {
+        pressingLeft = false
+        haveSentLeft = false
+        sendNewInfo = true
+    }
+
+    if (touchX > JknapX + imgJoystickS.width / 3 * 2 && touchX < JknapX + imgJoystickS.width && touchY > JknapY && touchY < JknapY + imgJoystickS.height) {
+        pressingRight = true
+    } else if (haveSentRight) {
+        pressingRight = false
+        haveSentRight = false
+        sendNewInfo = true
+    }
+}
+
+function drawTouchControls() {
+        ctx.globalAlpha = 0.7
+        ctx.drawImage(imgJoystickS, JknapX, JknapY)
+        ctx.drawImage(imgBAKnapS, BAknapX, BAknapY)
+        ctx.globalAlpha = 1
+}
+

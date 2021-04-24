@@ -53,16 +53,19 @@ io.sockets.on('connection', function(socket){
     emitAll('playerUpdate', PLAYER_LIST)
 
     socket.on('movement',function(data){
-        player.x = data.x
-        player.y = data.y
-        player.dir = data.dir
+        if (data != null) {
+            console.log(data)
+            player.x = data.x
+            player.y = data.y
+            player.dir = data.dir
 
-        posPack.push({
-            x:player.x,
-            y:player.y,
-            dir:player.dir,
-            id:player.id
-        });
+            posPack.push({
+                x:player.x,
+                y:player.y,
+                dir:player.dir,
+                id:player.id
+            });
+        }
     })
 
     socket.on('disconnect',function(){

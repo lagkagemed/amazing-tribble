@@ -3,13 +3,36 @@ let ctx = canvas.getContext("2d")
 ctx.imageSmoothingEnabled = false
 ctx.webkitImageSmoothingEnabled = false
 
+let myWidth = 10
+let myHeight = 10
+
+let unitSize = 10
+
+function setUnitSize(myWidth, myHeight) {
+  if (myWidth <= myHeight) unitSize = Math.floor(myWidth / 72)
+  if (myHeight <= myWidth) unitSize = Math.floor(myHeight / 72)
+}
+
+window.onload = function() {
+  init()
+  window.addEventListener('resize', init, false)
+  window.addEventListener("orientationchange", init, false)
+}
+function init() {
+  myWidth = window.innerWidth - 5
+  myHeight = window.innerHeight -5 
+  ctx.canvas.width = myWidth
+  ctx.canvas.height = myHeight
+  setUnitSize(myWidth, myHeight)
+}
+
+init()
+
 let t = performance.now()
 let deltat = 10
 
 let PLAYER_LIST = {}
 let myId = 0
-
-let unitSize = 10
 
 function degrees_to_radians(degrees)
 {
