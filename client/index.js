@@ -43,6 +43,7 @@ function update() {
     updateAllObjectsInList(PLAYER_LIST)
     checkKeyStates()
     sendInfo()
+    setOffset()
 }
 
 
@@ -86,8 +87,13 @@ function drawMap() {
     for (let i = 0; i < map.length; i++) {
         for (let a = 0; a < map[i].length; a++) {
             if (map[i][a] == 1) {
-                ctx.drawImage(imgGrassS, i * unitSize * 16, a * unitSize * 16)
+                ctx.drawImage(imgGrassS, i * unitSize * 16 - offsetX, a * unitSize * 16 - offsetY)
             }
         }
     }
+}
+
+function setOffset() {
+    offsetX = PLAYER_LIST[myId].x * unitSize - myWidth / 2
+    offsetY = PLAYER_LIST[myId].y * unitSize - myHeight / 2
 }

@@ -40,10 +40,10 @@ let Player = function(x, y, dir, socketid, name, speed) {
     }
 
     self.draw = function() {
-        drawImage(imgPlayerS, this.x, this.y, imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
+        drawImage(imgPlayerS, (this.x * unitSize - offsetX), (this.y * unitSize - offsetY), imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
         if (myId == self.socketid) ctx.fillStyle = 'GREEN'
         ctx.font = (unitSize * 2) + "px Arial";
-        ctx.fillText(this.name, this.x - (unitSize * this.name.length / 2), this.y + unitSize * 10);
+        ctx.fillText(this.name, (this.x * unitSize - (unitSize * this.name.length / 2) - offsetX), (this.y * unitSize + unitSize * 10 - offsetY));
         ctx.fillStyle = 'BLACK'
     }
 

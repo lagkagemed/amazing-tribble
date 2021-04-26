@@ -36,7 +36,7 @@ io.sockets.on('connection', function(socket){
     player.y = 100
     player.dir = 0
     player.id = socket.id
-    player.speed = 2
+    player.speed = 0.5
     
 
     let bName = pickRand(playerBName)

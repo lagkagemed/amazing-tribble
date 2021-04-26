@@ -6,6 +6,9 @@ ctx.webkitImageSmoothingEnabled = false
 let myWidth = 10
 let myHeight = 10
 
+let offsetX
+let offsetY
+
 let unitSize = 10
 
 function setUnitSize(myWidth, myHeight) {
