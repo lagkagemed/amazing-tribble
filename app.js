@@ -52,6 +52,8 @@ io.sockets.on('connection', function(socket){
     socket.emit('yourId', socket.id)
     emitAll('playerUpdate', PLAYER_LIST)
 
+    socket.emit('map', map)
+
     socket.on('movement',function(data){
         if (data != null) {
             console.log(data)
@@ -87,6 +89,75 @@ function emitAll(msg, data) {
         socket.emit(msg, data)
     }
 }
+
+function createMap(wid, hei, isl, siz) {
+    let newMap = []
+    let Islands = []
+
+    let Island = function(cX, cY) {
+        let self = {
+            cX:cX,
+            cY:cY,
+            lX:cX,
+            lY:cY
+        }
+
+        return self
+    }
+
+    for (let i = 0; i < wid; i++) {
+        newMap.push([])
+
+        for (let a = 0; a < hei; a++) {
+            newMap[i].push(0)
+        }
+
+    }
+
+    for (let i = 0; i < isl; i++) {
+        let randX = Math.floor(Math.random() * wid)
+        let randY = Math.floor(Math.random() * hei)
+        newMap[randX][randY] = 1
+        Islands.push(Island(randX, randY))
+    }
+
+    
+    for (let i = 0; i < siz;) {
+        let randIsl = Math.floor(Math.random() * Islands.length)
+        let currentIsland = Islands[randIsl]
+
+        let newX = currentIsland.lX
+        let newY = currentIsland.lY
+
+        let randDir = Math.floor(Math.random() * 4)
+
+        if (randDir == 0 ) newX -=1
+        if (randDir == 1 ) newX +=1
+        if (randDir == 2 ) newY -=1
+        if (randDir == 3 ) newY +=1
+
+        if (newX < 0) newX = wid -1
+        if (newX > wid - 1) newX = 0
+        if (newY < 0) newY = hei -1
+        if (newY > hei - 1) newY = 0
+
+        let currentTile = newMap[newX][newY]
+
+        if (currentTile == 0) {
+            newMap[newX][newY] = 1
+            currentIsland.lX = newX
+            currentIsland.lY = newY
+            i++
+        }
+
+    }
+    
+    console.log(newMap)
+    console.log(Islands)
+    return newMap
+}
+
+let map = createMap(20, 20, 10, 200)
 
 setInterval(function(){
     if (posPack != []) emitAll('newPositions', posPack)

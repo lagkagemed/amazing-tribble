@@ -1,5 +1,7 @@
 let socket = io();
 
+let map
+
 socket.on('yourId',function(data){
     myId = data
 });
@@ -22,6 +24,11 @@ socket.on('newPositions',function(data){
     }
 });
 
+socket.on('map', function(data){
+    map = data
+    receivedMap = true
+})
+
 function sendInfo() {
     if (sendNewInfo) {
         socket.emit('movement', PLAYER_LIST[myId])
@@ -41,6 +48,7 @@ function update() {
 
 function draw() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    if (receivedMap) drawMap()
     drawAllObjectsInList(PLAYER_LIST)
     if (isMobile) drawTouchControls()
 }
@@ -69,5 +77,17 @@ function updateAllObjectsInList(list) {
     for (let i in list) {
         let object = list[i];
         object.update();
+    }
+}
+
+let receivedMap = false
+
+function drawMap() {
+    for (let i = 0; i < map.length; i++) {
+        for (let a = 0; a < map[i].length; a++) {
+            if (map[i][a] == 1) {
+                ctx.drawImage(imgGrassS, i * unitSize * 16, a * unitSize * 16)
+            }
+        }
     }
 }

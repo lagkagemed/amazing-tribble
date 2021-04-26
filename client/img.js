@@ -23,6 +23,13 @@ imgBAKnap.addEventListener("load", function(){
     imgBAKnapS.src = Resize_Nearest_Neighbour(imgBAKnap, Math.floor(unitSize / 2))
 });
 
+let imgGrass = new Image()
+imgGrass.src = "./client/img/Grass.png"
+let imgGrassS = new Image()
+imgGrass.addEventListener("load", function(){
+    imgGrassS.src = Resize_Nearest_Neighbour(imgGrass, Math.floor(unitSize))
+});
+
 let hasSetButton = false
 
 function setButtonCoordinates() {
