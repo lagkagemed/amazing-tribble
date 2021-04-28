@@ -30,6 +30,27 @@ imgGrass.addEventListener("load", function(){
     imgGrassS.src = Resize_Nearest_Neighbour(imgGrass, Math.floor(unitSize))
 });
 
+let imgGrassF = new Image()
+imgGrassF.src = "./client/img/GrassF.png"
+let imgGrassFS = new Image()
+imgGrassF.addEventListener("load", function(){
+    imgGrassFS.src = Resize_Nearest_Neighbour(imgGrassF, Math.floor(unitSize))
+});
+
+let imgGrassM = new Image()
+imgGrassM.src = "./client/img/GrassM.png"
+let imgGrassMS = new Image()
+imgGrassM.addEventListener("load", function(){
+    imgGrassMS.src = Resize_Nearest_Neighbour(imgGrassM, Math.floor(unitSize))
+});
+
+let imgTree = new Image()
+imgTree.src = "./client/img/Tree.png"
+let imgTreeS = new Image()
+imgTree.addEventListener("load", function(){
+    imgTreeS.src = Resize_Nearest_Neighbour(imgTree, Math.floor(unitSize))
+});
+
 let hasSetButton = false
 
 function setButtonCoordinates() {

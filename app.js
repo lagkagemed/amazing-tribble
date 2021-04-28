@@ -90,7 +90,7 @@ function emitAll(msg, data) {
     }
 }
 
-function createMap(wid, hei, isl, siz) {
+function createMap(wid, hei, isl, siz, treeChance) {
     let newMap = []
     let Islands = []
 
@@ -102,6 +102,17 @@ function createMap(wid, hei, isl, siz) {
             lY:cY
         }
 
+        return self
+    }
+
+    let Trees = []
+
+    let Tree = function(x, y) {
+        let self = {
+            x:x,
+            y:y
+        }
+    
         return self
     }
 
@@ -121,7 +132,9 @@ function createMap(wid, hei, isl, siz) {
         Islands.push(Island(randX, randY))
     }
 
-    
+    let noFactor = 1
+    let noFactorTimes = 0
+
     for (let i = 0; i < siz;) {
         let randIsl = Math.floor(Math.random() * Islands.length)
         let currentIsland = Islands[randIsl]
@@ -131,10 +144,10 @@ function createMap(wid, hei, isl, siz) {
 
         let randDir = Math.floor(Math.random() * 4)
 
-        if (randDir == 0 ) newX -=1
-        if (randDir == 1 ) newX +=1
-        if (randDir == 2 ) newY -=1
-        if (randDir == 3 ) newY +=1
+        if (randDir == 0 ) newX -=noFactor
+        if (randDir == 1 ) newX +=noFactor
+        if (randDir == 2 ) newY -=noFactor
+        if (randDir == 3 ) newY +=noFactor
 
         if (newX < 0) newX = wid -1
         if (newX > wid - 1) newX = 0
@@ -143,10 +156,37 @@ function createMap(wid, hei, isl, siz) {
 
         let currentTile = newMap[newX][newY]
 
+        if (currentTile > 0) noFactorTimes++
+
+        if (noFactorTimes > 5) {
+            noFactor++
+            noFactorTimes = 0
+        }
+
         if (currentTile == 0) {
-            newMap[newX][newY] = 1
+            let randGrass = Math.floor(Math.random() * 3)
+            if (randGrass == 0) newMap[newX][newY] = 1
+            if (randGrass == 1) newMap[newX][newY] = 2
+            if (randGrass == 2) newMap[newX][newY] = 3
             currentIsland.lX = newX
             currentIsland.lY = newY
+            i++
+            noFactor = 1
+            console.log(i)
+        }
+
+    }
+
+    let numberOfTrees = Math.floor(siz * treeChance)
+
+    for (let i = 0; i < numberOfTrees;) {
+        let randX = Math.floor(Math.random() * wid)
+        let randY = Math.floor(Math.random() * hei)
+
+        if (newMap[randX][randY] > 0) {
+            let randTreeX = randX * 16 + Math.floor(Math.random() * 16)
+            let randTreeY = randY * 16 + Math.floor(Math.random() * 16)
+            Trees.push(Tree(randTreeX, randTreeY))
             i++
         }
 
@@ -154,10 +194,18 @@ function createMap(wid, hei, isl, siz) {
     
     console.log(newMap)
     console.log(Islands)
-    return newMap
+    console.log(Trees)
+
+    let map = {}
+
+    map.tiles = newMap
+
+    map.trees = Trees
+
+    return map
 }
 
-let map = createMap(20, 20, 10, 200)
+let map = createMap(100, 100, 100, 5000, 0.1)
 
 setInterval(function(){
     if (posPack != []) emitAll('newPositions', posPack)

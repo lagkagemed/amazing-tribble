@@ -84,12 +84,21 @@ function updateAllObjectsInList(list) {
 let receivedMap = false
 
 function drawMap() {
-    for (let i = 0; i < map.length; i++) {
-        for (let a = 0; a < map[i].length; a++) {
-            if (map[i][a] == 1) {
+    for (let i = 0; i < map.tiles.length; i++) {
+        for (let a = 0; a < map.tiles[i].length; a++) {
+            if (map.tiles[i][a] == 1) {
                 ctx.drawImage(imgGrassS, i * unitSize * 16 - offsetX, a * unitSize * 16 - offsetY)
             }
+            if (map.tiles[i][a] == 2) {
+                ctx.drawImage(imgGrassFS, i * unitSize * 16 - offsetX, a * unitSize * 16 - offsetY)
+            }
+            if (map.tiles[i][a] == 3) {
+                ctx.drawImage(imgGrassMS, i * unitSize * 16 - offsetX, a * unitSize * 16 - offsetY)
+            }
         }
+    }
+    for (let i = 0; i < map.trees.length; i++) {
+        ctx.drawImage(imgTreeS, ((map.trees[i].x * unitSize) - offsetX - imgTreeS.width / 2), ((map.trees[i].y * unitSize) - offsetY - imgTreeS.height))
     }
 }
 
