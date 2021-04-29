@@ -11,6 +11,14 @@ let offsetY
 
 let unitSize = 10
 
+let map = {}
+map.tiles = []
+map.trees = []
+
+let cachingTime = 0
+let orderlessCache = []
+let orderedCache = []
+
 function setUnitSize(myWidth, myHeight) {
   if (myWidth <= myHeight) unitSize = Math.floor(myWidth / 72)
   if (myHeight <= myWidth) unitSize = Math.floor(myHeight / 72)

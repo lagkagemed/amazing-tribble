@@ -1,6 +1,7 @@
 let Player = function(x, y, dir, socketid, name, speed) {
-    let self = Entity(x, y, dir)
-    
+    let self = Entity(x, y)
+
+    self.dir = dir
     self.socketid = socketid
     self.name = name
     self.speed = speed
@@ -40,10 +41,10 @@ let Player = function(x, y, dir, socketid, name, speed) {
     }
 
     self.draw = function() {
-        drawImage(imgPlayerS, (this.x * unitSize - offsetX), (this.y * unitSize - offsetY), imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
+        drawImage(imgPlayerS, (this.x * unitSize - offsetX), (this.y * unitSize - offsetY - imgPlayerS.height / 2), imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
         if (myId == self.socketid) ctx.fillStyle = 'GREEN'
         ctx.font = (unitSize * 2) + "px Arial";
-        ctx.fillText(this.name, (this.x * unitSize - (unitSize * this.name.length / 2) - offsetX), (this.y * unitSize + unitSize * 10 - offsetY));
+        ctx.fillText(this.name, (this.x * unitSize - (unitSize * this.name.length / 2) - offsetX), (this.y * unitSize + unitSize * 2 - offsetY));
         ctx.fillStyle = 'BLACK'
     }
 
