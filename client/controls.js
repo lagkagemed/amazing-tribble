@@ -91,6 +91,7 @@ canvas.addEventListener('touchstart', dragStart, false)
 canvas.addEventListener('touchend', dragEnd, false)
 canvas.addEventListener('touchmove', drag, false)
 
+let runTime = 0
 let touchJoy = -1
 let touchJoyX = 0
 let touchJoyY = 0
@@ -106,6 +107,8 @@ function dragStart(e) {
                 touchJoy = e.touches[i].identifier
                 touchJoyX = touchX
                 touchJoyY = touchY
+                if (runTime > 0 ) pressingRun = true
+                runTime = 15
             }
         }
     }
@@ -126,6 +129,7 @@ function dragEnd(e) {
             touchJoyX = 0
             touchJoyY = 0
             touchJoy = -1
+            pressingRun = false
         }
     }
 }
@@ -145,6 +149,7 @@ function drag(e) {
 }
 
 function updateTouchControls() {
+    runTime--
     let touchX = touchJoyX
     let touchY = touchJoyY
 
