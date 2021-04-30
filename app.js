@@ -36,7 +36,9 @@ io.sockets.on('connection', function(socket){
     player.y = 100
     player.dir = 0
     player.id = socket.id
-    player.speed = 0.5
+    player.wSpeed = 0.5
+    player.rSpeed = 1
+    player.isRunning = false
     
 
     let bName = pickRand(playerBName)
@@ -60,14 +62,20 @@ io.sockets.on('connection', function(socket){
             player.x = data.x
             player.y = data.y
             player.dir = data.dir
+            player.isRunning = data.isRunning
 
             posPack.push({
                 x:player.x,
                 y:player.y,
                 dir:player.dir,
-                id:player.id
+                id:player.id,
+                isRunning:player.isRunning
             });
         }
+    })
+
+    socket.on('touch',function(e){
+        console.log(e)
     })
 
     socket.on('disconnect',function(){

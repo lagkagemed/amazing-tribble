@@ -7,7 +7,7 @@ socket.on('yourId',function(data){
 socket.on('playerUpdate', function(data){
     PLAYER_LIST = {}
     for (i in data) {
-        let player = Player(data[i].x, data[i].y, data[i].dir, data[i].id, data[i].name, data[i].speed)
+        let player = Player(data[i].x, data[i].y, data[i].dir, data[i].id, data[i].name, data[i].wSpeed, data[i].rSpeed)
     }
 })
 
@@ -18,6 +18,7 @@ socket.on('newPositions',function(data){
             player.x = data[i].x
             player.y = data[i].y
             player.dir = data[i].dir
+            player.isRunning = data[i].isRunning
         }
     }
 });

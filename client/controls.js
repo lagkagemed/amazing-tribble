@@ -3,10 +3,14 @@ let pressingDown = false
 let pressingLeft = false
 let pressingRight = false
 
+let pressingRun = false
+
 let haveSentUp = false
 let haveSentDown = false
 let haveSentLeft = false
 let haveSentRight = false
+
+let haveSentRun = false
 
 let sendNewInfo = false
 
@@ -20,6 +24,7 @@ function logKeyDown(e) {
     if (e.keyCode == 83) pressingDown = true
     if (e.keyCode == 65) pressingLeft = true
     if (e.keyCode == 68) pressingRight = true
+    if (e.keyCode == 76) pressingRun = true
 }
 
 function logKeyUp(e) {
@@ -46,6 +51,12 @@ function logKeyUp(e) {
         haveSentRight = false
         sendNewInfo = true
     }
+
+    if (e.keyCode == 76) {
+        pressingRun = false
+        haveSentRun = false
+        sendNewInfo = true
+    }
 }
 
 function checkKeyStates() {
@@ -69,39 +80,74 @@ function checkKeyStates() {
         haveSentLeft = true
     }
 
+    if (pressingRun && !haveSentRun) {
+        sendNewInfo = true
+        haveSentRun = true
+    }
+
 }
 
 canvas.addEventListener('touchstart', dragStart, false)
 canvas.addEventListener('touchend', dragEnd, false)
 canvas.addEventListener('touchmove', drag, false)
 
-
-let touchX = 0
-let touchY = 0
+let touchJoy = -1
+let touchJoyX = 0
+let touchJoyY = 0
 
 function dragStart(e) {
     e.preventDefault()
-    touchX = e.touches[0].clientX
-    touchY = e.touches[0].clientY
+    for (let i = 0; i < e.touches.length; i++) {
+        let touchX = e.touches[i].clientX
+        let touchY = e.touches[i].clientY
+
+        if (touchJoy == -1) {
+            if (touchX > JknapX && touchX < JknapX + imgJoystickS.width && touchY > JknapY && touchY < JknapY + imgJoystickS.height) {
+                touchJoy = e.touches[i].identifier
+                touchJoyX = touchX
+                touchJoyY = touchY
+            }
+        }
+    }
 }
 
-function dragEnd() {
-    pressingUp = false
-    pressingDown = false
-    pressingLeft = false
-    pressingRight = false
-    sendNewInfo = true
-    touchX = 0
-    touchY = 0
+function dragEnd(e) {
+    if (touchJoy != -1) {
+        let touchJoyExist = false
+        for (let i = 0; i < e.touches.length; i++) {
+            if (e.touches[i].identifier == touchJoy) touchJoyExist = true
+        }
+        if (!touchJoyExist) {
+            pressingUp = false
+            pressingDown = false
+            pressingLeft = false
+            pressingRight = false
+            sendNewInfo = true
+            touchJoyX = 0
+            touchJoyY = 0
+            touchJoy = -1
+        }
+    }
 }
 
 function drag(e) {
     e.preventDefault()
-    touchX = e.touches[0].clientX
-    touchY = e.touches[0].clientY
+    if (touchJoy !== -1) {
+        for (let i = 0; i < e.touches.length; i++) {
+            let touchX = e.touches[i].clientX
+            let touchY = e.touches[i].clientY
+            if (e.touches[i].identifier == touchJoy) {
+                touchJoyX = touchX
+                touchJoyY = touchY
+            }
+        }
+    }
 }
 
 function updateTouchControls() {
+    let touchX = touchJoyX
+    let touchY = touchJoyY
+
     if (touchX > JknapX && touchX < JknapX + imgJoystickS.width && touchY > JknapY && touchY < JknapY + imgJoystickS.height / 3) {
         pressingUp = true
     } else if (haveSentUp) {
