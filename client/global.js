@@ -9,6 +9,8 @@ let myHeight = 10
 let offsetX
 let offsetY
 
+let physGravity = 1
+
 let unitSize = 10
 
 let map = {}

@@ -1,6 +1,7 @@
 let Player = function(x, y, dir, socketid, name, wSpeed, rSpeed) {
     let self = Entity(x, y)
 
+    self.z = 0
     self.dir = dir
     self.socketid = socketid
     self.name = name
@@ -8,7 +9,13 @@ let Player = function(x, y, dir, socketid, name, wSpeed, rSpeed) {
     self.rSpeed = rSpeed
 
     self.facingLeft = false
+
     self.isRunning = false
+
+    self.isJumping = false
+    self.zVel = 0
+    self.jumpVel = 5
+
 
     self.update = function() {
         if (myId == self.socketid) {
@@ -24,6 +31,9 @@ let Player = function(x, y, dir, socketid, name, wSpeed, rSpeed) {
 
             this.isRunning = false
             if (pressingRun) this.isRunning = true
+
+            this.isJumping = false
+            if (pressingJump) this.isJumping = true
         }
 
         let speed = 0
@@ -47,11 +57,19 @@ let Player = function(x, y, dir, socketid, name, wSpeed, rSpeed) {
 
         if (this.dir > 1 && this.dir < 5) this.facingLeft = false
         if (this.dir > 5) this.facingLeft = true
+
+        if (this.z < 0 ) this.z += physGravity
+        if (this.z > 0 ) this.z = 0
+        if (this.isJumping && this.z == 0) this.zVel = this.jumpVel
+        if (this.zVel > 0) {
+            this.z -= this.zVel
+            this.zVel -= 1
+        }
         
     }
 
     self.draw = function() {
-        drawImage(imgPlayerS, (this.x * unitSize - offsetX), (this.y * unitSize - offsetY - imgPlayerS.height / 2), imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
+        drawImage(imgPlayerS, (this.x * unitSize - offsetX), (this.y * unitSize - offsetY - imgPlayerS.height / 2 + this.z * unitSize), imgPlayerS.width, imgPlayerS.height, 180, this.facingLeft, true, true)
         if (myId == self.socketid) ctx.fillStyle = 'GREEN'
         ctx.font = (unitSize * 2) + "px Arial";
         ctx.fillText(this.name, (this.x * unitSize - (unitSize * this.name.length / 2) - offsetX), (this.y * unitSize + unitSize * 2 - offsetY));

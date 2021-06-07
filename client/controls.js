@@ -4,6 +4,7 @@ let pressingLeft = false
 let pressingRight = false
 
 let pressingRun = false
+let pressingJump = false
 
 let haveSentUp = false
 let haveSentDown = false
@@ -11,6 +12,7 @@ let haveSentLeft = false
 let haveSentRight = false
 
 let haveSentRun = false
+let haveSentJump = false
 
 let sendNewInfo = false
 
@@ -25,6 +27,7 @@ function logKeyDown(e) {
     if (e.keyCode == 65) pressingLeft = true
     if (e.keyCode == 68) pressingRight = true
     if (e.keyCode == 76) pressingRun = true
+    if (e.keyCode == 75) pressingJump = true
 }
 
 function logKeyUp(e) {
@@ -57,6 +60,12 @@ function logKeyUp(e) {
         haveSentRun = false
         sendNewInfo = true
     }
+
+    if (e.keyCode == 75) {
+        pressingJump = false
+        haveSentJump = false
+        sendNewInfo = true
+    }
 }
 
 function checkKeyStates() {
@@ -83,6 +92,11 @@ function checkKeyStates() {
     if (pressingRun && !haveSentRun) {
         sendNewInfo = true
         haveSentRun = true
+    }
+
+    if (pressingJump && !haveSentJump) {
+        sendNewInfo = true
+        haveSentJump = true
     }
 
 }

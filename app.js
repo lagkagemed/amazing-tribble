@@ -39,6 +39,7 @@ io.sockets.on('connection', function(socket){
     player.wSpeed = 0.5
     player.rSpeed = 1
     player.isRunning = false
+    player.isJumping = false
     
 
     let bName = pickRand(playerBName)
@@ -63,13 +64,15 @@ io.sockets.on('connection', function(socket){
             player.y = data.y
             player.dir = data.dir
             player.isRunning = data.isRunning
+            player.isJumping = data.isJumping
 
             posPack.push({
                 x:player.x,
                 y:player.y,
                 dir:player.dir,
                 id:player.id,
-                isRunning:player.isRunning
+                isRunning:player.isRunning,
+                isJumping:player.isJumping
             });
         }
     })

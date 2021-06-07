@@ -19,6 +19,7 @@ socket.on('newPositions',function(data){
             player.y = data[i].y
             player.dir = data[i].dir
             player.isRunning = data[i].isRunning
+            player.isJumping = data[i].isJumping
         }
     }
 });
